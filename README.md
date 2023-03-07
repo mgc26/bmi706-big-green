@@ -1,73 +1,19 @@
-# bmi706-2023-ps3
+# bmi706 - Final Project - Team Big_Green
 
-Hello, world!
+## Introduction
 
+In this repo, we have produced several dynamic figures using data pertaining to hospital utilization and the COVID-19 pandemic.
 
-## Requirements
+The COVID-19 pandemic has had a significant impact on healthcare utilization. While some patients have continued to seek emergency care for urgent medical needs, others have been hesitant to go to the health care institutions due to fears of contracting COVID-19. This has resulted in a change in healthcare utilization. The pandemic has also led to changes in the way care is delivered, including increased use of telemedicine and a greater focus on infection prevention and control measures. As the COVID-19 pandemic continues to evolve and in preparation for future public health crises, an analysis of healthcare utilization is prudent.
 
-Please make sure to have the following downloaded and installed on your machine before proceeding.
+We will utilize two primary data sources to investigate the impact of the coronavirus pandemic on healthcare utilization in the US. Data on coronavirus cases and deaths will be obtained from the Centers for Disease Control and Prevention (CDC), which maintains geographic and temporal incidence data. Data on emergency department utilization and inpatient admissions will be derived from the Healthcare Cost and Utilization Project (HCUPnet): https://datatools.ahrq.gov/hcupnet. HCUP is a collection of healthcare databases developed through a public/private partnership and sponsored by the Agency for Healthcare Research and Quality (AHRQ). Data is collected by individual states and aggregated by AHRQ. Details regarding HCUP are available: https://www.hcup-us.ahrq.gov/
 
-- [Visual Studio Code](https://code.visualstudio.com/download)
-- [Git](https://git-scm.com/download)
-- [Anaconda](https://docs.anaconda.com/anaconda/install/)
+## Usage
 
-> If you have a preferred text editor and/or know how to manage python virtual environments, please view these requirements
-as recommendations.
-
-### Getting started
-
-#### Create **private** GitHub repo from `hms-dbmi/bmi706-2023-ps3`
-
-In order to work independently of your classmates, we ask that you create a **private GitHub repository** for this template repo.
-Select the **Download ZIP** option to download the archive for this folder.
-
-<img src="https://user-images.githubusercontent.com/24403730/217667978-78e2de3b-82dc-425a-8fb4-473d3bcd6737.png">
-
-Unzip the archive and drag the folder into VS Code. Within VS Code, select the **Source Control** and **Publish to GitHub**.
-Modify the name in the prompt at the top of the editor to `bmi706-2023-ps3`, and select **Publish to GitHub Private repository**.
-
-<img src="https://user-images.githubusercontent.com/24403730/217669894-b1e4cfa2-7b30-44cd-b3d1-2fc2e1568cfb.png">
+This public Github repo includes the files for a `streamlit` application.
 
 
-This will create a private GitHub repository under `<YOUR-GITHUB-USERNAME>/bmi706-2023-ps3`. This step is essential for eventually
-sharing your application on Streamlit Cloud.
 
-#### Making changes
-
-You can now open your initialized project in VS Code and begin editing.
-
-<img src="https://user-images.githubusercontent.com/24403730/217671131-bdf8b3cc-ba86-4ba0-8dd9-e599a8172685.png">
-
-Selecting a file from the sidebar will open the file in the editor where you are free make changes.
-
-#### Committing changes
-
-A *commit* is a snapshot of the state of your repository at a specific time. Git keeps track of history of
-your repository via commits so that you can revert back to a prior version at any time. In order to
-synchronize your local changes with the fork on GitHub, you will need to create a *new commit* 
-adding the changes you've made. 
-
-Let's practice making a commit by replacing "Hello, world" with "Hello, `<your name>`" at the top of this file.
-
-- Open `README.md` in VS Code.
-
-<img src="https://user-images.githubusercontent.com/24403730/217670989-5d94455d-65b2-4c42-a1d7-643575ea43eb.png">
-
-- Replace `world` at the top of the file with *your name* and save the file.
-
-<img src="https://user-images.githubusercontent.com/24403730/217670993-a5a0ce45-de8e-4e7c-90ae-e931342bea8d.png">
-
-> Note how the file tab for `README.md` is now yellow with an "M", signifing that it has been modified. The **Source Control** icon in the 
-> sidebar additionally has shows a `1`, indicating that `1` file has changed.
-
-- Click the **Source Control** icon in the sidebar and enter *Message* describing the changes we've made. Click the 
-"Commit" check mark to stage and commit our changes.
-
-<img src="https://user-images.githubusercontent.com/24403730/217671484-9d1f2fa9-d73f-4058-923e-fabba4cea87e.png">
-
-- Click the Synchronize Changes to update GitHub with our latest changes
-
-<img src="https://user-images.githubusercontent.com/24403730/217671709-2c7bc25b-4e1c-45be-b505-f40058e0c2b9.png">
 
 ### Developing with `streamlit`
 
