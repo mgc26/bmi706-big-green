@@ -17,7 +17,9 @@ def load_data():
 
 # df = load_data()
 
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9= st.tabs(["📣 Start", "📈 Plot 1", "📈 Plot 2", "📈 Plot 3", "📈 Plot 4", "📈 Plot 5", "📈 Plot 6", "📈 Plot 7", "🗃 Data"])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9= st.tabs(["📣 Start", "📈 Plot 1", "📈 Plot 2",
+                                                                "📈 Plot 3", "📈 Plot 4", "📈 Plot 5",
+                                                                  "📈 Plot 6", "📈 Plot 7", "🗃 Data"])
 
 raw_df = pd.read_csv('all_data.csv')
 covid_df = pd.read_csv('covid_data.csv')
@@ -61,8 +63,8 @@ covid_df['Death_Rate']=(covid_df['new_deaths']/covid_df['new_cases']) * 100
 
 
 #test with 10 states
-state_sub = ['Maryland', 'Connecticut', 'New York', 'New Jersey', 'California', 'Colorado', 'Texas', 'Florida', 'Michigan']
-raw_df = raw_df[raw_df['state'].isin(state_sub)]
+#state_sub = ['Maryland', 'Connecticut', 'New York', 'New Jersey', 'California', 'Colorado', 'Texas', 'Florida', 'Michigan']
+#raw_df = raw_df[raw_df['state'].isin(state_sub)]
 
 with tab1:
 
@@ -76,7 +78,7 @@ with tab1:
     st.markdown("Authors: Brendin Beaulieu-Jones & Matthew Crowson")
 
 with tab2:
-    st.header("Plot 1")
+    st.header("Head-to-Head: COVID Cases and Mortality by State")
 
     #Visualization (1) - THIS IS THE COVID DATAFRAME AND WORKS ON ALL 50 STATES
     upper = alt.Chart(covid_df).mark_line(point=True).properties(
@@ -86,7 +88,7 @@ with tab2:
         y = alt.Y("Death_Rate:Q", axis=alt.Axis(title="COVID Mortality Rate")),
         color = 'state:N'
     )
-    upper
+    #upper
 
     lower = alt.Chart(covid_df).mark_bar().properties(
         width=60
@@ -96,7 +98,7 @@ with tab2:
         color = 'state:N',
         column=alt.Column("date:O", title=None, sort= ["Dec-2020", "Jan-2021", "Feb-2021", "Mar-2021", "Apr-2021", "May-2021", "Jun-2021"]),
     )
-    lower
+    #lower
 
     plot1 = upper & lower
     plot1 = plot1.add_selection(
@@ -106,12 +108,8 @@ with tab2:
     )
     plot1
 
-
-#Visualization (Z)
-#Issues - when stratify by age_group, data appears to disappear
-
 with tab3:
-    st.header("Plot 2")
+    st.header("Head-to-Head: COVID Mortality & Hospital Length of Stay")
 
     #Visualization (2)
 
@@ -122,7 +120,7 @@ with tab3:
         y = alt.Y("Death_Rate:Q", axis=alt.Axis(title="COVID Mortality Rate")),
         color = "state:N"
     )
-    upper2
+    #upper2
 
     lower2 = alt.Chart(raw_df).mark_point().properties(
         width=550
@@ -131,7 +129,7 @@ with tab3:
         y=alt.Y('mean(LOS):Q', axis=alt.Axis(title="Hospital Length of Stay (Days)")),
         color = 'state:N',
     )
-    lower2
+    #lower2
 
     plot2 = upper2 & lower2
     plot2 = plot2.add_selection(
@@ -146,7 +144,7 @@ with tab3:
 #Issues: would be nice for donut plots to show % rather than raw numbers 
 
 with tab4:
-    st.header("Plot 3")
+    st.header("Head-to-Head: COVID Mortality & Age")
 
     #Visualization (3)
     upper6 = alt.Chart(raw_df).mark_point().properties(
@@ -165,7 +163,7 @@ with tab4:
     upper6
 
 with tab5:
-    st.header("Plot 4")
+    st.header("COVID Mortality Rates by Age")
 
     #Visualization (4a)
     upper3 = alt.Chart(raw_df).mark_line().properties(
@@ -183,6 +181,8 @@ with tab5:
         state_select1 | state_select2
     )
     upper3
+
+    st.header("Hospital Length of Stay by Age")
 
     #Visualization (4b)
     lower3 = alt.Chart(raw_df).mark_point().properties(
@@ -202,7 +202,7 @@ with tab5:
     lower3
 
 with tab6:
-    st.header("Plot 5")
+    st.header("Case Counts and Mortality Rate by State")
 
     #Visualization (5)
     base = alt.Chart(covid_df).encode(alt.X('date:O', title=None, sort=["Dec-2020", "Jan-2021", "Feb-2021", "Mar-2021", "Apr-2021", "May-2021", "Jun-2021"]))
@@ -264,7 +264,7 @@ with tab6:
     chart5
 
 with tab7:
-    st.header("Plot 6")
+   #st.header("Plot 6")
 
     #Visualization (6)
     covid_new1 = covid_df.groupby(['state', 'date', 'Unnamed: 0']).sum().reset_index()
@@ -338,7 +338,7 @@ with tab7:
 
 
 with tab8:
-    st.header("Plot 7")
+    #st.header("Plot 7")
 
     #Visualization (7)
     covid_new2 = covid_df.groupby(['state', 'date']).sum().reset_index()
