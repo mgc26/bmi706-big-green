@@ -2,6 +2,7 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 from PIL import Image
+from vega_datasets import data
 
 
 @st.cache
@@ -16,7 +17,7 @@ def load_data():
 
 # df = load_data()
 
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9= st.tabs(["📣 Start", "📈 Plot 1", "📈 Plot 2", "📈 Plot 3", "📈 Plot 4", "📈 Plot 5", "📈 Plot 6", "📈 Plot 7" "🗃 Data"])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9= st.tabs(["📣 Start", "📈 Plot 1", "📈 Plot 2", "📈 Plot 3", "📈 Plot 4", "📈 Plot 5", "📈 Plot 6", "📈 Plot 7", "🗃 Data"])
 
 raw_df = pd.read_csv('all_data.csv')
 covid_df = pd.read_csv('covid_data.csv')
