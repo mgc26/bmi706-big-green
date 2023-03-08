@@ -1,6 +1,7 @@
 import altair as alt
 import pandas as pd
 import streamlit as st
+from PIL import Image
 
 
 @st.cache
@@ -15,7 +16,7 @@ def load_data():
 
 # df = load_data()
 
-tab1, tab2, tab3, tab4= st.tabs(["📈 Plot 1", "📈 Plot 2", "📈 Plot 3", "🗃 Data"])
+tab1, tab2, tab3, tab4, tab5= st.tabs(["📣 Start", "📈 Plot 1", "📈 Plot 2", "📈 Plot 3", "🗃 Data"])
 
 raw_df = pd.read_csv('all_data.csv')
 covid_df = pd.read_csv('covid_data.csv')
@@ -48,6 +49,17 @@ state_sub = ['Maryland', 'Connecticut', 'New York', 'New Jersey', 'California']
 raw_df = raw_df[raw_df['state'].isin(state_sub)]
 
 with tab1:
+
+    image = Image.open('title.jpg')
+    st.image(image, caption='Image is creative commons license')
+
+    st.title("Welcome to our COVID-19 Healthcare Utilization Analysis App")
+    st.markdown("In this repo, we have produced several dynamic figures using data pertaining to hospital utilization and the COVID-19 pandemic.")
+    st.markdown("The COVID-19 pandemic has had a significant impact on healthcare utilization. While some patients have continued to seek emergency care for urgent medical needs, others have been hesitant to go to the health care institutions due to fears of contracting COVID-19. This has resulted in a change in healthcare utilization. The pandemic has also led to changes in the way care is delivered, including increased use of telemedicine and a greater focus on infection prevention and control measures. As the COVID-19 pandemic continues to evolve and in preparation for future public health crises, an analysis of healthcare utilization is prudent.")
+    st.markdown("We will utilize two primary data sources to investigate the impact of the coronavirus pandemic on healthcare utilization in the US. Data on coronavirus cases and deaths will be obtained from the Centers for Disease Control and Prevention (CDC), which maintains geographic and temporal incidence data. Data on emergency department utilization and inpatient admissions will be derived from the Healthcare Cost and Utilization Project (HCUPnet): https://datatools.ahrq.gov/hcupnet. HCUP is a collection of healthcare databases developed through a public/private partnership and sponsored by the Agency for Healthcare Research and Quality (AHRQ). Data is collected by individual states and aggregated by AHRQ. Details regarding HCUP are available: https://www.hcup-us.ahrq.gov/") 
+    st.markdown("Brendin Beaulieu-Jones & Matthew Crowson")
+
+with tab2:
     st.header("Plot 1")
 
     #Visualization (X)
@@ -87,7 +99,7 @@ with tab1:
 #Visualization (Z)
 #Issues - when stratify by age_group, data appears to disappear
 
-with tab2:
+with tab3:
     st.header("Plot 2")
 
     upper2 = alt.Chart(raw_df).mark_point().properties(
@@ -127,7 +139,7 @@ with tab2:
 #Issues: would be nice to add total deaths or death rate to upper chart
 #Issues: would be nice for donut plots to show % rather than raw numbers 
 
-with tab3:
+with tab4:
     st.header("Plot 3")
 
     base2 = alt.Chart(raw_df
@@ -194,7 +206,7 @@ with tab3:
 
     chart3
 
-with tab4:
+with tab5:
 
     st.header("Data")
 
