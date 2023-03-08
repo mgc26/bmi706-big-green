@@ -12,50 +12,7 @@ We will utilize two primary data sources to investigate the impact of the corona
 
 This public Github repo includes the files for a `streamlit` application.
 
+## Authors
 
-
-
-### Developing with `streamlit`
-
-You'll need to set up a Python environment for working your Streamlit application locally. Streamlit's only officially-supported environment
-manager on Windows, macOS, and linux is [Anaconda Navigator](https://docs.anaconda.com/anaconda/navigator/). Please make sure you 
-have this installed. (The following is adapted from Streamlit's [documentation](https://docs.streamlit.io/library/get-started/installation).)
-
-#### Create a new Python environment with Streamlit
-
-1.) Follow the steps provided by Anaconda to
-[set up and manage your environment](https://docs.anaconda.com/anaconda/navigator/getting-started/#managing-environments) 
-using the Anaconda Navigator.
-
-2.) Select the "▶" icon next to your new environment. Then select "Open terminal":
-
-<img width="1024" src="https://i.stack.imgur.com/EiiFc.png">
-
-
-3.) In the terminal that appears, type:
-
-```bash
-pip install streamlit
-```
-
-4.) Test that the installation worked:
-
-```bash
-streamlit hello
-```
-
-Streamlit's Hello app should appear in a new tab in your web browser.
-
-
-#### Use your new environment
-
-1.) In Anaconda Navigator, open a terminal in your environment (see step 2 above).
-
-2.) In the terminal that appears, navigate to your local workspace and run:
-
-```bash
-streamlit run streamlit_app.py
-```
-
-This will open the template streamlit app in the web browser. You can now start editing the contents
-of `streamlit_app.py`, and refresh the page in your web browser we see changes.
+Brendin Beaulieu-Jones
+Matthew Crowson
