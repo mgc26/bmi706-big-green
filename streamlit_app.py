@@ -76,6 +76,9 @@ plot1 = plot1.add_selection(
 ).transform_filter(
     state_select
 )
+
+st.text('First Plot')
+
 plot1
 
 
@@ -110,6 +113,9 @@ plot2 = plot2.add_selection(
 ).transform_filter(
     state_select
 )
+
+st.text('Second Plot')
+
 plot2
 
 #Visualization (Z)
@@ -174,4 +180,7 @@ chart3 = alt.vconcat(bar1, donut
                      ).resolve_scale(
                          color='independent'
                      )
+
+st.text('Third Plot')
+
 chart3
