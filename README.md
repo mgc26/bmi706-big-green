@@ -14,5 +14,5 @@ This public Github repo includes the files for a `streamlit` application.
 
 ## Authors
 
-Brendin Beaulieu-Jones
-Matthew Crowson
+* Brendin Beaulieu-Jones
+* Matthew Crowson
