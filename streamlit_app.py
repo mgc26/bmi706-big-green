@@ -195,7 +195,7 @@ with tab3:
     chart3
 
 with tab4:
-    
+
     st.header("Data")
 
-    raw_df.head()
+    st.dataframe(data=raw_df)
