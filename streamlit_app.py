@@ -2,111 +2,170 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
-### P1.2 ###
-
-# Move this code into `load_data` function {{
-cancer_df = pd.read_csv("https://raw.githubusercontent.com/hms-dbmi/bmi706-2022/main/cancer_data/cancer_ICD10.csv").melt(  # type: ignore
-    id_vars=["Country", "Year", "Cancer", "Sex"],
-    var_name="Age",
-    value_name="Deaths",
-)
-
-pop_df = pd.read_csv("https://raw.githubusercontent.com/hms-dbmi/bmi706-2022/main/cancer_data/population.csv").melt(  # type: ignore
-    id_vars=["Country", "Year", "Sex"],
-    var_name="Age",
-    value_name="Pop",
-)
-
-df = pd.merge(left=cancer_df, right=pop_df, how="left")
-df["Pop"] = df.groupby(["Country", "Sex", "Age"])["Pop"].fillna(method="bfill")
-df.dropna(inplace=True)
-
-df = df.groupby(["Country", "Year", "Cancer", "Age", "Sex"]).sum().reset_index()
-df["Rate"] = df["Deaths"] / df["Pop"] * 100_000
-
-# }}
-
 
 @st.cache
+
 def load_data():
-    ## {{ CODE HERE }} ##
-    df = ...  # remove this line
+    raw_df = pd.read_csv('/all_data.csv')
+    covid_df = pd.read_csv('/covid_data.csv')
     return df
 
-
-# Uncomment the next line when finished
-# df = load_data()
-
-### P1.2 ###
+# Load the data in the same working directory
+df = load_data()
 
 
-st.write("## Age-specific cancer mortality rates")
+#create a drop-down selector for state
+states = raw_df['state'].unique()
+state_dropdown = alt.binding_select(options=states)
+state_select = alt.selection_single(
+    fields=['state'], bind=state_dropdown, name="State")
 
-### P2.1 ###
-# replace with st.slider
-year = 2012
-subset = df[df["Year"] == year]
-### P2.1 ###
+#create a drop-down selector for date
+dates = raw_df['date'].unique()
+date_dropdown = alt.binding_select(options=dates)
+date_select = alt.selection_single(
+    fields=['date'], bind=date_dropdown, name="Date")
 
-
-### P2.2 ###
-# replace with st.radio
-sex = "M"
-subset = subset[subset["Sex"] == sex]
-### P2.2 ###
-
-
-### P2.3 ###
-# replace with st.multiselect
-# (hint: can use current hard-coded values below as as `default` for selector)
-countries = [
-    "Austria",
-    "Germany",
-    "Iceland",
-    "Spain",
-    "Sweden",
-    "Thailand",
-    "Turkey",
-]
-subset = subset[subset["Country"].isin(countries)]
-### P2.3 ###
+#create a drop-down selector for age_group
+ages = raw_df['patient_variable'].unique()
+age_dropdown = alt.binding_select(options=ages)
+age_select = alt.selection_single(
+    fields=['age'], bind=age_dropdown, name="Age")
 
 
-### P2.4 ###
-# replace with st.selectbox
-cancer = "Malignant neoplasm of stomach"
-subset = subset[subset["Cancer"] == cancer]
-### P2.4 ###
+#calculate mortality rate ([deaths / new cases] *100)
+raw_df['Death_Rate']=(raw_df['new_deaths']/raw_df['new_cases']) * 100
 
 
-### P2.5 ###
-ages = [
-    "Age <5",
-    "Age 5-14",
-    "Age 15-24",
-    "Age 25-34",
-    "Age 35-44",
-    "Age 45-54",
-    "Age 55-64",
-    "Age >64",
-]
+#test with five states (MD, CT, NY, NJ, CA)
+state_sub = ['Maryland', 'Connecticut', 'New York', 'New Jersey', 'California']
+raw_df = raw_df[raw_df['state'].isin(state_sub)]
 
-chart = alt.Chart(subset).mark_bar().encode(
-    x=alt.X("Age", sort=ages),
-    y=alt.Y("Rate", title="Mortality rate per 100k"),
-    color="Country",
-    tooltip=["Rate"],
-).properties(
-    title=f"{cancer} mortality rates for {'males' if sex == 'M' else 'females'} in {year}",
+
+#Visualization (X)
+#Issues - trying to unstack bar chart
+#Issues - trying to add a second selection so that you can compare state A to state B
+
+upper = alt.Chart(raw_df).mark_line().properties(
+    width=550
+).encode(
+    x = alt.X("date:O", sort= ["Dec-2020", "Jan-2021", "Feb-2021", "Mar-2021", "Apr-2021", "May-2021", "Jun-2021"]),
+    y = "Death_Rate:Q",
+    color = 'state:N'
 )
-### P2.5 ###
+upper
 
-st.altair_chart(chart, use_container_width=True)
+lower = alt.Chart(raw_df).mark_bar().properties(
+    width=550
+  ).encode(
+    x=alt.X("date:O", sort= ["Dec-2020", "Jan-2021", "Feb-2021", "Mar-2021", "Apr-2021", "May-2021", "Jun-2021"]),
+    y=alt.Y("new_deaths:Q"),
+    color = 'state:N',
+)
+lower
 
-countries_in_subset = subset["Country"].unique()
-if len(countries_in_subset) != len(countries):
-    if len(countries_in_subset) == 0:
-        st.write("No data avaiable for given subset.")
-    else:
-        missing = set(countries) - set(countries_in_subset)
-        st.write("No data available for " + ", ".join(missing) + ".")
+plot1 = upper & lower
+plot1 = plot1.add_selection(
+    state_select
+).transform_filter(
+    state_select
+)
+plot1
+
+
+#Visualization (Z)
+#Issues - when stratify by age_group, data appears to disappear
+
+upper2 = alt.Chart(raw_df).mark_point().properties(
+    width=550
+).encode(
+    x = alt.X("date:O", sort= ["Dec-2020", "Jan-2021", "Feb-2021", "Mar-2021", "Apr-2021", "May-2021", "Jun-2021"]),
+    y = "mean(Death_Rate)",
+    color = "state:N"
+)
+upper2
+
+lower2 = alt.Chart(raw_df).mark_point().properties(
+    width=550
+  ).encode(
+    x=alt.X("date:O", sort= ["Dec-2020", "Jan-2021", "Feb-2021", "Mar-2021", "Apr-2021", "May-2021", "Jun-2021"]),
+    y=alt.Y("mean(LOS)"),
+    color = 'state:N',
+)
+lower2
+
+plot2 = upper2 & lower2
+plot2 = plot2.add_selection(
+    age_select
+).transform_filter(
+    age_select
+).add_selection(
+    state_select
+).transform_filter(
+    state_select
+)
+plot2
+
+#Visualization (Z)
+#Issues: would be nice to add total deaths or death rate to upper chart
+#Issues: would be nice for donut plots to show % rather than raw numbers 
+base2 = alt.Chart(raw_df
+                  ).add_selection(
+                      state_select
+                  ).transform_filter(
+                      state_select
+                  )
+                  
+bar1 = base2.mark_bar().encode(
+        x = alt.X("date:O", sort= ["Dec-2020", "Jan-2021", "Feb-2021", "Mar-2021", "Apr-2021", "May-2021", "Jun-2021"]),
+        y='sum(tot_cases):Q',
+).properties(
+    width=500
+)
+
+#bar2 = base2.mark_bar().encode(
+#        x = alt.X("date:O", sort= ["Dec-2020", "Jan-2021", "Feb-2021", "Mar-2021", "Apr-2021", "May-2021", "Jun-2021"]),
+#        y='sum(tot_deaths):Q',
+#).properties(
+#    width=500
+#)
+
+#c = alt.layer(bar1, bar2)
+
+ages = ['Age: 0-17 years', 'Age: 18-44 years', 'Age: 45-64 years', 'Age:65-79 years', 'Age: 80+ years']
+
+donut1 = base2.mark_arc(innerRadius=50, outerRadius=90).encode(
+    theta=alt.Theta(field="new_cases", aggregate="sum", type="quantitative"),
+    color=alt.Color('patient_variable', sort=ages),
+    tooltip= [
+        alt.Tooltip(shorthand="sum(new_cases):Q", title="New Cases"),
+        alt.Tooltip("state:N", title="State"),
+        alt.Tooltip("ages:O", title="Age Group")
+    ]
+).transform_filter(
+    state_select
+    ).properties(
+        width=250
+    )
+
+donut2 = base2.mark_arc(innerRadius=50, outerRadius=90).encode(
+    theta=alt.Theta(field="new_deaths", aggregate="sum", type="quantitative"),
+    color=alt.Color('patient_variable', sort=ages),
+    tooltip= [
+        alt.Tooltip(shorthand="sum(new_deaths):Q", title="New Deaths"),
+        alt.Tooltip("state:N", title="State"),
+        alt.Tooltip("ages:O", title="Age Group")
+    ]
+).transform_filter(
+    state_select
+    ).properties(
+        width=250
+    )
+
+donut=alt.hconcat(donut1, donut2)
+
+chart3 = alt.vconcat(bar1, donut
+                     ).resolve_scale(
+                         color='independent'
+                     )
+chart3
