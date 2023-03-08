@@ -6,13 +6,17 @@ import streamlit as st
 @st.cache
 
 def load_data():
-    raw_df = pd.read_csv('/all_data.csv')
-    covid_df = pd.read_csv('/covid_data.csv')
+    raw_df = pd.read_csv('all_data.csv')
+    covid_df = pd.read_csv('covid_data.csv')
+    
     return df
 
 # Load the data in the same working directory
-df = load_data()
 
+# df = load_data()
+
+raw_df = pd.read_csv('all_data.csv')
+covid_df = pd.read_csv('covid_data.csv')
 
 #create a drop-down selector for state
 states = raw_df['state'].unique()
