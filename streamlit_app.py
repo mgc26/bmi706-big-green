@@ -15,6 +15,8 @@ def load_data():
 
 # df = load_data()
 
+st.text('Welcome to the Big Green Streamlit App')
+
 raw_df = pd.read_csv('all_data.csv')
 covid_df = pd.read_csv('covid_data.csv')
 
