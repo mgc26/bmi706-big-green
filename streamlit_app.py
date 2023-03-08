@@ -267,16 +267,19 @@ with tab7:
    #st.header("Plot 6")
 
     #Visualization (6)
+    
     covid_new1 = covid_df.groupby(['state', 'date', 'Unnamed: 0']).sum().reset_index()
     covid_new1['tot_cases'] = covid_df.groupby(['state', 'date']).sum().groupby(['state', 'date', 'Unnamed: 0']).first().reset_index()['tot_cases']
     covid_new1['Death_Rate']=(covid_new1['new_deaths']/covid_new1['new_cases']) * 100
 
-    from vega_datasets import data
+    #from vega_datasets import data
+
     source = alt.topo_feature(data.us_10m.url, 'states')
 
     date = 'Dec-2020'
     covid_new1 = covid_new1[covid_new1['date']==date]
 
+    covid_new1 = covid_new1.sort_values(by='state', ascending=True)
     covid_new1['id']=covid_new1.reset_index().index
 
     width = 600
@@ -311,7 +314,9 @@ with tab7:
     rate_color = alt.Color(field="Death_Rate", type="quantitative", scale=rate_scale)
     chart_rate = chart_base.mark_geoshape().encode(
         color=rate_color,
-        tooltip=['Death_Rate:Q', 'state:N']
+        tooltip=[alt.Tooltip("Death_Rate:Q", title="COVID-19 Death Rate"),
+                 alt.Tooltip("state:N", title="State")
+            ],
         ).transform_filter(
         selector
         ).properties(
