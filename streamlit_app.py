@@ -163,29 +163,23 @@ with tab4:
     upper6
 
 with tab5:
-    st.header("COVID Mortality Rates by Age")
-
+    #t.header("COVID Mortality Rates by Age")
+    viz5 = raw_df[raw_df['discharge_variable'].str.contains("COVID-19-Related Inpatient Stays")]
     #Visualization (4a)
-    upper3 = alt.Chart(raw_df).mark_line().properties(
-        width=150
+    viz = alt.Chart(viz5,title="Comparing COVID-19 Discharges to Total COVID Deaths, by Age").mark_point().properties(
+        width=1000
     ).encode(
-        x = alt.X("date:O", axis=alt.Axis(title=None), sort= ["Dec-2020", "Jan-2021", "Feb-2021", "Mar-2021", "Apr-2021", "May-2021", "Jun-2021"]),
-        y = alt.Y("Death_Rate:Q", axis=alt.Axis(title="COVID Mortality Rate")),
-        color = "state:O",
-        column=alt.Column('patient_variable:O', title=None)
+        x=alt.X('sum(discharge_n):Q', title="COVID-19 Hospital Discharges"),
+        y=alt.Y('tot_deaths:Q', title="Total COVID Deaths"),
+        color='patient_variable:N',
+        tooltip=['patient_variable:N']
     )
+    viz
 
-    upper3 = upper3.add_selection(
-        state_select1, state_select2
-    ).transform_filter(
-        state_select1 | state_select2
-    )
-    upper3
-
-    st.header("Hospital Length of Stay by Age")
+    #st.header("Hospital Length of Stay by Age")
 
     #Visualization (4b)
-    lower3 = alt.Chart(raw_df).mark_point().properties(
+    lower3 = alt.Chart(raw_df, title="Hospital Length of Stay by Age").mark_point().properties(
         width=150
     ).encode(
         x=alt.X("date:O", axis=alt.Axis(title=None), sort= ["Dec-2020", "Jan-2021", "Feb-2021", "Mar-2021", "Apr-2021", "May-2021", "Jun-2021"]),
@@ -238,21 +232,22 @@ with tab6:
             alt.Tooltip("state:N", title="State"),
             alt.Tooltip("patient_variable:O", title="Age Group")
         ]
-    ).transform_filter(
-        state_select1
         ).properties(
             width=250
         )
-
+    
 
     lower2 = alt.Chart(raw_df).mark_line(point=True).properties(
         width=250
     ).encode(
         x = alt.X('patient_variable:O', axis=alt.Axis(title=None)),
-        y = alt.Y('mean(Death_Rate):Q', axis=alt.Axis(title="COVID Mortality Rate")),
+        y = alt.Y('sum(1st_dose):Q', axis=alt.Axis(title="First Dose of COVID-19")),
+    ).add_selection(
+                        state_select1
     ).transform_filter(
         state_select1
     )
+    
     lower2
 
     donut=alt.hconcat(lower2, donut1)
@@ -281,6 +276,7 @@ with tab7:
 
     covid_new1 = covid_new1.sort_values(by='state', ascending=True)
     covid_new1['id']=covid_new1.reset_index().index
+    covid_new1['id']=covid_new1["id"] +1
 
     width = 600
     height = 300
@@ -357,6 +353,7 @@ with tab8:
     covid_new2 = covid_new2[covid_new2['date']==date2]
 
     covid_new2['id']=covid_new2.reset_index().index
+    covid_new2['id']=covid_new2["id"] +1
 
     width = 600
     height = 300
