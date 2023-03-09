@@ -248,7 +248,7 @@ with tab6:
         state_select1
     )
     
-    lower2
+    #lower2
 
     donut=alt.hconcat(lower2, donut1)
 
